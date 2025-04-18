@@ -1,0 +1,15 @@
+import React from 'react'
+import "./Shop.css"
+import Navbar from '../Navbar'
+
+const Shop = () => {
+  return (
+    <div>
+      <Navbar></Navbar>
+      shop-page
+    </div>
+  )
+}
+
+export default Shop
+

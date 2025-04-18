@@ -1,0 +1,32 @@
+.shop-container {
+    display: flex;
+    min-height: 100vh;
+  }
+  
+  .shop-sidebar {
+    width: 250px;
+    background-color: #f5f5f5;
+    padding: 1rem;
+    border-right: 1px solid #ddd;
+  }
+  
+  .filter-section {
+    margin-bottom: 1.5rem;
+  }
+  
+  .filter-section h4 {
+    margin-bottom: 0.5rem;
+  }
+  
+  .filter-section label {
+    display: block;
+    margin-bottom: 0.3rem;
+    cursor: pointer;
+  }
+  
+  .shop-products {
+    flex: 1;
+    padding: 1rem;
+    background-color: #fff;
+  }
+  

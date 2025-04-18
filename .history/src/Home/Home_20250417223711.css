@@ -1,0 +1,13 @@
+.home-container {
+    display: flex;
+    flex-direction: column;
+}
+
+.section {
+
+}
+
+.home-image-1, .home-image-2 {
+    width: 200px;
+    height: 200px;
+}

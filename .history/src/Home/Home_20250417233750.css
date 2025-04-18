@@ -1,0 +1,31 @@
+.home-container {
+    display: flex;
+    background-color: black;
+}
+
+.section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: stretch;
+    padding: 0;
+    margin: 0;
+}
+
+.section1, .section2 {
+    height: 1200px;
+    background-attachment: fixed;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.section1 {
+    width: 70%;
+    background-image: url('https://static.wixstatic.com/media/bc439c_81f0e108fef742289cca2a608af8d3c1~mv2.jpg');
+}
+
+.section2 {
+    width: 30%;
+    background-image: url('https://static.wixstatic.com/media/bc439c_01f9dcb9288c449084b2625be71b7a54~mv2.jpg');
+}

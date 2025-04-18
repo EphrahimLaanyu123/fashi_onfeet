@@ -1,0 +1,19 @@
+.home-container {
+  width: 100vw;
+  display: flex;
+  flex-direction: row; /* changed from column */
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  background-color: white;
+  padding: 20px;
+  flex-wrap: wrap; /* Allows wrapping on small screens */
+}
+
+.home-image {
+  width: 40%; /* Each image takes roughly half of 80% total */
+  max-width: 600px;
+  object-fit: cover;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+}

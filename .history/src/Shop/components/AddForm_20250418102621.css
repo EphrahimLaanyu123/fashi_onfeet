@@ -1,0 +1,38 @@
+.add-form {
+    width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background: #000000;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  }
+  
+  .add-form h2 {
+    margin-bottom: 20px;
+    text-align: center;
+  }
+  
+  .add-form input,
+  .add-form select,
+  .add-form textarea,
+  .add-form button {
+    display: block;
+    width: 100%;
+    margin-bottom: 15px;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  .add-form button {
+    background-color: #0077cc;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.3s;
+  }
+  
+  .add-form button:hover {
+    background-color: #005fa3;
+  }
+  

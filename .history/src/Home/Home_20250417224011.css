@@ -1,0 +1,15 @@
+.home-container {
+    display: flex;
+}
+
+.section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-image-1, .home-image-2 {
+    width: 200px;
+    height: 200px;
+}

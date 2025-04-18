@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+/* index.css or main.css */
+body, html {
+    margin: 0;
+    padding: 0;
+  }
+  
+.shop_page {
+    width: 100vw;
+    font-family: "Raleway", sans-serif;
+
+}
+
+.shop-container {
+    display: flex;
+
+}
+
+.sidebar {
+    display: flex;
+    flex-direction: column;
+    width: 14%;
+    min-height: 100vh;
+    background-color: rgb(0, 0, 0);
+    padding: 1rem;
+    gap: 1rem;
+    color: aliceblue;
+}
+
+
+.Browse_by {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.Browse_by_h1 ,.filter_by_h1{
+    font-size: 1.5rem;
+}
+
+.underline {
+    width: 90%;
+    height: 1.5px;
+    background-color: rgb(235, 236, 235);
+    transform: scaleY(0.2);
+    transform-origin: top;
+    border-radius: 2px;
+    margin-top: -30px;
+  }
+  
+
+  .browse {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .underline-1 {
+    width: 90%;
+    height: 1.5px;
+    background-color: rgb(235, 236, 235);
+    transform: scaleY(0.2);
+    transform-origin: top;
+    border-radius: 2px;
+  }
+
+
+
+  .filters-price {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 1rem;
+  }
+  
+  .filters-price label {
+    font-size: 1rem;
+    color: #ccc;
+  }
+  
+  .filters-price input[type="range"] {
+    width: 100%;
+    -webkit-appearance: none;
+    height: 4px;
+    border-radius: 5px;
+    background: #ccc;
+    outline: none;
+  }
+  
+  .filters-price input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    border: 2px solid black;
+  }
+  
+  .filters-price input[type="range"]::-moz-range-thumb {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    border: 2px solid black;
+  }
+  
+
+
+
+
+
+
+
+
+
+
+  .products-page {
+    width: 86%;
+    background-color: bisque;
+}

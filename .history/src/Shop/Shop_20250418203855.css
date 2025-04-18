@@ -1,0 +1,25 @@
+/* index.css or main.css */
+body, html {
+    margin: 0;
+    padding: 0;
+  }
+  
+.shop_page {
+    width: 100vw;
+}
+
+.shop-container {
+    display: flex;
+
+}
+
+.sidebar {
+    width: 1%;
+    min-height: 100vh;
+    background-color: brown;
+}
+
+.products-page {
+    width: 80%;
+    background-color: bisque;
+}

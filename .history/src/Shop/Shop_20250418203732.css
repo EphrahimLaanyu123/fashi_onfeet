@@ -1,0 +1,21 @@
+/* index.css or main.css */
+body, html {
+    margin: 0;
+    padding: 0;
+  }
+  
+
+
+.shop-container {
+    display: flex;
+    
+}
+
+.sidebar {
+    min-height: 100vh;
+    background-color: brown;
+}
+
+.products-page {
+    width: 80%;
+}

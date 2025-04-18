@@ -1,0 +1,16 @@
+.home-container {
+    display: flex;
+}
+
+.section {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.home-image-1, . {
+    width: 600px;
+    height: 1200px;
+    object-fit: cover;
+}

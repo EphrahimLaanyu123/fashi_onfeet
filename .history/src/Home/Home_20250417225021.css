@@ -1,0 +1,23 @@
+.home-container {
+    display: flex;
+}
+
+.section {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: ;
+}
+
+.home-image-1 {
+    width: 80%;
+    height: 1200px;
+    object-fit: cover;
+}
+
+.home-image-2 {
+    width: 200px;
+    height: 1200px;
+    object-fit: cover;
+}
