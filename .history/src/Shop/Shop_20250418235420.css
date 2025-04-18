@@ -186,10 +186,8 @@ body, html {
 /* Sort By Dropdown Styling */
 .sort-by {
     display: flex;
-    justify-content: flex-end;
     align-items: center;
     gap: 10px;
-    padding: 1rem;
   }
   
   .sort-by label {
@@ -223,23 +221,6 @@ body, html {
   .sort-by select option {
     background-color: #222;
     color: #eee;
-  }
-  
-  /* ... (rest of your CSS) ... */
-
-
-  /* Shop.css */
-
-/* ... (previous styles) ... */
-
-.product-card.clickable {
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  }
-  
-  .product-card.clickable:hover {
-    transform: scale(1.03);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   }
   
   /* ... (rest of your CSS) ... */

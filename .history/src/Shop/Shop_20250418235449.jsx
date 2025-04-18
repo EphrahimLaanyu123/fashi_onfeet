@@ -2,13 +2,11 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from './supabaseClient'; // adjust path if needed
 import './Shop.css';
 import Navbar from '../Navbar';
-import Product from './components/Product';
 
 const Shop = () => {
   const [price, setPrice] = useState(10000);
   const [products, setProducts] = useState([]);
   const [sortBy, setSortBy] = useState('');
-  const [selectedProduct, setSelectedProduct] = useState(null);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -43,14 +41,6 @@ const Shop = () => {
       default:
         return productsToSort;
     }
-  };
-
-  const handleProductClick = (product) => {
-    setSelectedProduct(product);
-  };
-
-  const handleCloseModal = () => {
-    setSelectedProduct(null);
   };
 
   const filteredProducts = products.filter((p) => p.price <= price);
@@ -98,24 +88,13 @@ const Shop = () => {
           <section className="products-page-top">
             <div className="products-page-top-container">
               <p className="top-container">All Products</p>
+
             </div>
           </section>
-          <div className="sort-by">
-            <label htmlFor="sort">Sort By:</label>
-            <select id="sort" value={sortBy} onChange={(e) => setSortBy(e.target.value)}>
-              <option value="">Default</option>
-              <option value="a-z">A-Z</option>
-              <option value="price-high-low">Price (Highest to Lowest)</option>
-              <option value="price-low-high">Price (Lowest to Highest)</option>
-            </select>
-          </div>
+
           <div className="products-list">
             {sortedAndFilteredProducts.map((product) => (
-              <div
-                key={product.id}
-                className="product-card clickable" // Add a clickable class for styling
-                onClick={() => handleProductClick(product)}
-              >
+              <div key={product.id} className="product-card">
                 <img
                   src={
                     product.product_images?.[0]
@@ -133,10 +112,6 @@ const Shop = () => {
           </div>
         </section>
       </div>
-
-      {selectedProduct && (
-        <Product product={selectedProduct} onClose={handleCloseModal} />
-      )}
     </div>
   );
 };

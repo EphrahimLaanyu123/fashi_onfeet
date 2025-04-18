@@ -135,7 +135,7 @@ const Shop = () => {
       </div>
 
       {selectedProduct && (
-        <Product product={selectedProduct} onClose={handleCloseModal} />
+        <ProductModal product={selectedProduct} onClose={handleCloseModal} />
       )}
     </div>
   );

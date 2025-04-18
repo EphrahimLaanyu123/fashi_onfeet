@@ -226,20 +226,3 @@ body, html {
   }
   
   /* ... (rest of your CSS) ... */
-
-
-  /* Shop.css */
-
-/* ... (previous styles) ... */
-
-.product-card.clickable {
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  }
-  
-  .product-card.clickable:hover {
-    transform: scale(1.03);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* ... (rest of your CSS) ... */

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from './supabaseClient'; // adjust path if needed
 import './Shop.css';
 import Navbar from '../Navbar';
-import Product from './components/Product';
+import ProductModal
 
 const Shop = () => {
   const [price, setPrice] = useState(10000);
@@ -135,7 +135,7 @@ const Shop = () => {
       </div>
 
       {selectedProduct && (
-        <Product product={selectedProduct} onClose={handleCloseModal} />
+        <ProductModal product={selectedProduct} onClose={handleCloseModal} />
       )}
     </div>
   );

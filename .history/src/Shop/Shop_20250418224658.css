@@ -128,9 +128,7 @@ body, html {
     background-color: rgb(0, 0, 0);
     padding: 1rem;
     padding-top: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
+    di
 }
 
 .products-page-top-container {
@@ -155,6 +153,7 @@ body, html {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 1.5rem;
+    padding: 1.5rem;
     color: white;
   }
   
@@ -167,8 +166,8 @@ body, html {
   
 
   .product-img {
-    width: 280px;
-    height: 280px;
+    width: 100%;
+    height: 180px;
     object-fit: cover;
     margin-bottom: 0.8rem;
   }
@@ -178,68 +177,3 @@ body, html {
     color: #ccc;
   }
   
-
-  /* Shop.css */
-
-/* ... (previous styles) ... */
-
-/* Sort By Dropdown Styling */
-.sort-by {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 10px;
-    padding: 1rem;
-  }
-  
-  .sort-by label {
-    color: #eee;
-    font-size: 1rem;
-  }
-  
-  .sort-by select {
-    padding: 0.6rem 1rem;
-    border: 1px solid #444;
-    border-radius: 6px;
-    background-color: #222;
-    color: #eee;
-    font-size: 1rem;
-    cursor: pointer;
-    -webkit-appearance: none; /* Remove default arrow in Webkit browsers */
-    -moz-appearance: none; /* Remove default arrow in Firefox */
-    appearance: none; /* Remove default arrow in other browsers */
-    background-image: url('data:image/svg+xml;utf8,<svg fill="%23eee" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
-    background-repeat: no-repeat;
-    background-position-x: calc(100% - 0.6rem);
-    background-position-y: 50%;
-  }
-  
-  .sort-by select:focus {
-    outline: none;
-    border-color: #007bff;
-    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-  }
-  
-  .sort-by select option {
-    background-color: #222;
-    color: #eee;
-  }
-  
-  /* ... (rest of your CSS) ... */
-
-
-  /* Shop.css */
-
-/* ... (previous styles) ... */
-
-.product-card.clickable {
-    cursor: pointer;
-    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
-  }
-  
-  .product-card.clickable:hover {
-    transform: scale(1.03);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  /* ... (rest of your CSS) ... */
