@@ -1,0 +1,38 @@
+/* Cart.css */
+.cart {
+    padding: 20px;
+    background: #f4f4f4;
+    border-radius: 8px;
+    margin: 20px auto;
+    max-width: 400px;
+    color: #111;
+  }
+  
+  .cart h2 {
+    margin-bottom: 15px;
+  }
+  
+  .cart ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .cart li {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+  
+  .cart button {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  .cart button:hover {
+    background-color: #c82333;
+  }
+  

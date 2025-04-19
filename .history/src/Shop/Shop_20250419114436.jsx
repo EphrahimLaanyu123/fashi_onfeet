@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from './supabaseClient';
+import { supabase } from './supabaseClient'; // adjust path if needed
 import './Shop.css';
 import Navbar from '../Navbar';
 import Product from './components/Product';
+import { useNavigate } from 'react-router-dom'; // Import useNavigate
 
 const Shop = () => {
   const [price, setPrice] = useState(10000);
   const [products, setProducts] = useState([]);
   const [sortBy, setSortBy] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [user, setUser] = useState(null);
+  const navigate = useNavigate(); // Initialize useNavigate
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -29,7 +32,17 @@ const Shop = () => {
       }
     };
 
+    const fetchUser = async () => {
+      const { data: { user: currentUser } } = await supabase.auth.getUser();
+      setUser(currentUser);
+    };
+
     fetchProducts();
+    fetchUser();
+
+    supabase.auth.onAuthStateChange((event, session) => {
+      setUser(session?.user ?? null);
+    });
   }, []);
 
   const sortProducts = (productsToSort, sortOption) => {
@@ -54,49 +67,65 @@ const Shop = () => {
   };
 
   const handleAddToCart = async (product) => {
-    const { data: { user } } = await supabase.auth.getUser();
-
     if (!user) {
-      alert("Please log in to add items to your cart.");
+      // Redirect to login if the user is not logged in
+      navigate('/login'); // Assuming you have a /login route
       return;
     }
 
     try {
-      // Check if cart exists for this user
-      let { data: cart, error: cartError } = await supabase
+      // 1. Check if the user has an active cart
+      let { data: carts, error: cartError } = await supabase
         .from('carts')
-        .select('*')
-        .eq('id', user.id)
-        .single();
+        .select('id')
+        .eq('user_id', user.id) // Assuming you have a user_id column in your carts table
+        .is('is_active', true) // Assuming you have an is_active column to track the current cart
+        .limit(1);
 
-      // Create cart if not found
-      if (!cart) {
-        const { data: newCart, error: newCartError } = await supabase
-          .from('carts')
-          .insert({ id: user.id }) // using user.id as cart id
-          .select()
-          .single();
-
-        if (newCartError) throw newCartError;
-        cart = newCart;
+      if (cartError) {
+        console.error('Error fetching active cart:', cartError);
+        return;
       }
 
-      // Insert item into cart_items
+      let cartId;
+      if (carts && carts.length > 0) {
+        // User has an active cart
+        cartId = carts[0].id;
+      } else {
+        // User doesn't have an active cart, create one
+        const { data: newCart, error: newCartError } = await supabase
+          .from('carts')
+          .insert([{ user_id: user.id, is_active: true }]) // Assuming you set user_id and is_active
+          .select('id')
+          .single();
+
+        if (newCartError) {
+          console.error('Error creating new cart:', newCartError);
+          return;
+        }
+        cartId = newCart.id;
+      }
+
+      // 2. Add the product to the cart_items table
       const { error: addItemError } = await supabase
         .from('cart_items')
-        .insert({
-          cart_id: cart.id,
-          product_id: product.id,
-          quantity: 1,
-          size: 'M', // Optional: allow user to pick size in modal
-        });
+        .insert([
+          {
+            cart_id: cartId,
+            product_id: product.id,
+            quantity: 1, // You might want to allow users to select quantity later
+            // You might also want to handle 'size' if your products have sizes
+          },
+        ]);
 
-      if (addItemError) throw addItemError;
-
-      alert(`${product.name} added to cart!`);
-    } catch (err) {
-      console.error('Error adding to cart:', err.message);
-      alert("Something went wrong while adding to cart.");
+      if (addItemError) {
+        console.error('Error adding item to cart:', addItemError);
+      } else {
+        alert(`${product.name} added to cart!`);
+        // Optionally, update a local cart state for immediate feedback
+      }
+    } catch (error) {
+      console.error('An unexpected error occurred:', error);
     }
   };
 
@@ -160,28 +189,26 @@ const Shop = () => {
             {sortedAndFilteredProducts.map((product) => (
               <div
                 key={product.id}
-                className="product-card clickable"
-                onClick={() => handleProductClick(product)}
+                className="product-card"
               >
-                <img
-                  src={
-                    product.product_images?.[0]
-                      ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/${product.product_images[0].image_path}`
-                      : 'https://via.placeholder.com/150'
-                  }
-                  alt={product.name}
-                  className="product-img"
-                />
-                <h3>{product.name}</h3>
-                <p>Ksh {product.price}</p>
-                <p className="product-desc">{product.description}</p>
-                <button
-                  className="add-to-cart-btn"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent opening modal
-                    handleAddToCart(product);
-                  }}
+                <div
+                  className="clickable"
+                  onClick={() => handleProductClick(product)}
                 >
+                  <img
+                    src={
+                      product.product_images?.[0]
+                        ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/${product.product_images[0].image_path}`
+                        : 'https://via.placeholder.com/150'
+                    }
+                    alt={product.name}
+                    className="product-img"
+                  />
+                  <h3>{product.name}</h3>
+                  <p>Ksh {product.price}</p>
+                  <p className="product-desc">{product.description}</p>
+                </div>
+                <button className="add-to-cart-btn" onClick={() => handleAddToCart(product)}>
                   Add to Cart
                 </button>
               </div>

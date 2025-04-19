@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import './Cart.css';
-import Navbar from '../../Navbar';
+import Navbar from '../Navbar';
 
 const Cart = () => {
   const [cartItems, setCartItems] = useState([]);

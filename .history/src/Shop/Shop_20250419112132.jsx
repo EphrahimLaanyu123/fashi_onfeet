@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from './supabaseClient';
+import { supabase } from './supabaseClient'; // adjust path if needed
 import './Shop.css';
 import Navbar from '../Navbar';
 import Product from './components/Product';
@@ -51,53 +51,6 @@ const Shop = () => {
 
   const handleCloseModal = () => {
     setSelectedProduct(null);
-  };
-
-  const handleAddToCart = async (product) => {
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      alert("Please log in to add items to your cart.");
-      return;
-    }
-
-    try {
-      // Check if cart exists for this user
-      let { data: cart, error: cartError } = await supabase
-        .from('carts')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-
-      // Create cart if not found
-      if (!cart) {
-        const { data: newCart, error: newCartError } = await supabase
-          .from('carts')
-          .insert({ id: user.id }) // using user.id as cart id
-          .select()
-          .single();
-
-        if (newCartError) throw newCartError;
-        cart = newCart;
-      }
-
-      // Insert item into cart_items
-      const { error: addItemError } = await supabase
-        .from('cart_items')
-        .insert({
-          cart_id: cart.id,
-          product_id: product.id,
-          quantity: 1,
-          size: 'M', // Optional: allow user to pick size in modal
-        });
-
-      if (addItemError) throw addItemError;
-
-      alert(`${product.name} added to cart!`);
-    } catch (err) {
-      console.error('Error adding to cart:', err.message);
-      alert("Something went wrong while adding to cart.");
-    }
   };
 
   const filteredProducts = products.filter((p) => p.price <= price);
@@ -160,7 +113,7 @@ const Shop = () => {
             {sortedAndFilteredProducts.map((product) => (
               <div
                 key={product.id}
-                className="product-card clickable"
+                className="product-card clickable" // Add a clickable class for styling
                 onClick={() => handleProductClick(product)}
               >
                 <img
@@ -175,15 +128,6 @@ const Shop = () => {
                 <h3>{product.name}</h3>
                 <p>Ksh {product.price}</p>
                 <p className="product-desc">{product.description}</p>
-                <button
-                  className="add-to-cart-btn"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent opening modal
-                    handleAddToCart(product);
-                  }}
-                >
-                  Add to Cart
-                </button>
               </div>
             ))}
           </div>

@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from './supabaseClient';
+import { supabase } from './supabaseClient'; // adjust path if needed
 import './Shop.css';
 import Navbar from '../Navbar';
 import Product from './components/Product';
+import Cart from './Cart'; // Import the Cart component
 
 const Shop = () => {
   const [price, setPrice] = useState(10000);
   const [products, setProducts] = useState([]);
   const [sortBy, setSortBy] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -53,51 +56,25 @@ const Shop = () => {
     setSelectedProduct(null);
   };
 
-  const handleAddToCart = async (product) => {
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      alert("Please log in to add items to your cart.");
-      return;
-    }
-
-    try {
-      // Check if cart exists for this user
-      let { data: cart, error: cartError } = await supabase
-        .from('carts')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-
-      // Create cart if not found
-      if (!cart) {
-        const { data: newCart, error: newCartError } = await supabase
-          .from('carts')
-          .insert({ id: user.id }) // using user.id as cart id
-          .select()
-          .single();
-
-        if (newCartError) throw newCartError;
-        cart = newCart;
+  const addToCart = (product) => {
+    setCartItems((prevItems) => {
+      const existingItem = prevItems.find((item) => item.id === product.id);
+      if (existingItem) {
+        return prevItems.map((item) =>
+          item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
+        );
+      } else {
+        return [...prevItems, { ...product, quantity: 1 }];
       }
+    });
+  };
 
-      // Insert item into cart_items
-      const { error: addItemError } = await supabase
-        .from('cart_items')
-        .insert({
-          cart_id: cart.id,
-          product_id: product.id,
-          quantity: 1,
-          size: 'M', // Optional: allow user to pick size in modal
-        });
+  const openCart = () => {
+    setIsCartOpen(true);
+  };
 
-      if (addItemError) throw addItemError;
-
-      alert(`${product.name} added to cart!`);
-    } catch (err) {
-      console.error('Error adding to cart:', err.message);
-      alert("Something went wrong while adding to cart.");
-    }
+  const closeCart = () => {
+    setIsCartOpen(false);
   };
 
   const filteredProducts = products.filter((p) => p.price <= price);
@@ -105,11 +82,12 @@ const Shop = () => {
 
   return (
     <div className="shop_page">
-      <Navbar />
+      <Navbar onCartClick={openCart} cartItemCount={cartItems.length} /> {/* Pass cart info to Navbar */}
       <p className="shop-header">Home &gt; All Products</p>
 
       <div className="shop-container">
         <aside className="sidebar">
+          {/* Sidebar content remains the same */}
           <section className="Browse_by">
             <h1 className="Browse_by_h1">Browse By</h1>
             <div className="underline"></div>
@@ -160,28 +138,26 @@ const Shop = () => {
             {sortedAndFilteredProducts.map((product) => (
               <div
                 key={product.id}
-                className="product-card clickable"
-                onClick={() => handleProductClick(product)}
+                className="product-card"
               >
-                <img
-                  src={
-                    product.product_images?.[0]
-                      ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/${product.product_images[0].image_path}`
-                      : 'https://via.placeholder.com/150'
-                  }
-                  alt={product.name}
-                  className="product-img"
-                />
-                <h3>{product.name}</h3>
-                <p>Ksh {product.price}</p>
-                <p className="product-desc">{product.description}</p>
-                <button
-                  className="add-to-cart-btn"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent opening modal
-                    handleAddToCart(product);
-                  }}
+                <div
+                  className="clickable"
+                  onClick={() => handleProductClick(product)}
                 >
+                  <img
+                    src={
+                      product.product_images?.[0]
+                        ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/${product.product_images[0].image_path}`
+                        : 'https://via.placeholder.com/150'
+                    }
+                    alt={product.name}
+                    className="product-img"
+                  />
+                  <h3>{product.name}</h3>
+                  <p>Ksh {product.price}</p>
+                  <p className="product-desc">{product.description}</p>
+                </div>
+                <button className="add-to-cart-btn" onClick={() => addToCart(product)}>
                   Add to Cart
                 </button>
               </div>
@@ -192,6 +168,10 @@ const Shop = () => {
 
       {selectedProduct && (
         <Product product={selectedProduct} onClose={handleCloseModal} />
+      )}
+
+      {isCartOpen && (
+        <Cart cartItems={cartItems} onClose={closeCart} setCartItems={setCartItems} />
       )}
     </div>
   );

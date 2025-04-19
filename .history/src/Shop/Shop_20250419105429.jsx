@@ -3,12 +3,14 @@ import { supabase } from './supabaseClient';
 import './Shop.css';
 import Navbar from '../Navbar';
 import Product from './components/Product';
+import Cart from './components/Cart';
 
 const Shop = () => {
   const [price, setPrice] = useState(10000);
   const [products, setProducts] = useState([]);
   const [sortBy, setSortBy] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cartItems, setCartItems] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -53,51 +55,14 @@ const Shop = () => {
     setSelectedProduct(null);
   };
 
-  const handleAddToCart = async (product) => {
-    const { data: { user } } = await supabase.auth.getUser();
+  const handleAddToCart = (product) => {
+    setCartItems((prevItems) => [...prevItems, product]);
+  };
 
-    if (!user) {
-      alert("Please log in to add items to your cart.");
-      return;
-    }
-
-    try {
-      // Check if cart exists for this user
-      let { data: cart, error: cartError } = await supabase
-        .from('carts')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-
-      // Create cart if not found
-      if (!cart) {
-        const { data: newCart, error: newCartError } = await supabase
-          .from('carts')
-          .insert({ id: user.id }) // using user.id as cart id
-          .select()
-          .single();
-
-        if (newCartError) throw newCartError;
-        cart = newCart;
-      }
-
-      // Insert item into cart_items
-      const { error: addItemError } = await supabase
-        .from('cart_items')
-        .insert({
-          cart_id: cart.id,
-          product_id: product.id,
-          quantity: 1,
-          size: 'M', // Optional: allow user to pick size in modal
-        });
-
-      if (addItemError) throw addItemError;
-
-      alert(`${product.name} added to cart!`);
-    } catch (err) {
-      console.error('Error adding to cart:', err.message);
-      alert("Something went wrong while adding to cart.");
-    }
+  const handleRemoveFromCart = (indexToRemove) => {
+    setCartItems((prevItems) =>
+      prevItems.filter((_, index) => index !== indexToRemove)
+    );
   };
 
   const filteredProducts = products.filter((p) => p.price <= price);
@@ -124,19 +89,17 @@ const Shop = () => {
           <section className="filter_by">
             <h1 className="filter_by_h1">Filter By</h1>
             <div className="underline-1"></div>
-            <div className="filters">
-              <div className="filters-price">
-                <label htmlFor="priceRange">Max Price: Ksh {price}</label>
-                <input
-                  type="range"
-                  id="priceRange"
-                  min="500"
-                  max="10000"
-                  step="10"
-                  value={price}
-                  onChange={(e) => setPrice(Number(e.target.value))}
-                />
-              </div>
+            <div className="filters-price">
+              <label htmlFor="priceRange">Max Price: Ksh {price}</label>
+              <input
+                type="range"
+                id="priceRange"
+                min="500"
+                max="10000"
+                step="10"
+                value={price}
+                onChange={(e) => setPrice(Number(e.target.value))}
+              />
             </div>
           </section>
         </aside>
@@ -156,6 +119,7 @@ const Shop = () => {
               <option value="price-low-high">Price (Lowest to Highest)</option>
             </select>
           </div>
+
           <div className="products-list">
             {sortedAndFilteredProducts.map((product) => (
               <div
@@ -175,24 +139,23 @@ const Shop = () => {
                 <h3>{product.name}</h3>
                 <p>Ksh {product.price}</p>
                 <p className="product-desc">{product.description}</p>
-                <button
-                  className="add-to-cart-btn"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent opening modal
-                    handleAddToCart(product);
-                  }}
-                >
-                  Add to Cart
-                </button>
               </div>
             ))}
           </div>
         </section>
       </div>
 
+      {/* Product Modal */}
       {selectedProduct && (
-        <Product product={selectedProduct} onClose={handleCloseModal} />
+        <Product
+          product={selectedProduct}
+          onClose={handleCloseModal}
+          onAddToCart={handleAddToCart}
+        />
       )}
+
+      {/* Cart */}
+      <Cart cartItems={cartItems} onRemoveFromCart={handleRemoveFromCart} />
     </div>
   );
 };

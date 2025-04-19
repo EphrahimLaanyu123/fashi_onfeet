@@ -9,6 +9,7 @@ const Shop = () => {
   const [products, setProducts] = useState([]);
   const [sortBy, setSortBy] = useState('');
   const [selectedProduct, setSelectedProduct] = useState(null);
+  const [cart, setCart] = useState([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -53,51 +54,23 @@ const Shop = () => {
     setSelectedProduct(null);
   };
 
-  const handleAddToCart = async (product) => {
-    const { data: { user } } = await supabase.auth.getUser();
-
-    if (!user) {
-      alert("Please log in to add items to your cart.");
-      return;
-    }
-
-    try {
-      // Check if cart exists for this user
-      let { data: cart, error: cartError } = await supabase
-        .from('carts')
-        .select('*')
-        .eq('id', user.id)
-        .single();
-
-      // Create cart if not found
-      if (!cart) {
-        const { data: newCart, error: newCartError } = await supabase
-          .from('carts')
-          .insert({ id: user.id }) // using user.id as cart id
-          .select()
-          .single();
-
-        if (newCartError) throw newCartError;
-        cart = newCart;
+  const addToCart = (product) => {
+    setCart(prevCart => {
+      // Check if product already exists in cart
+      const existingItem = prevCart.find(item => item.id === product.id);
+      
+      if (existingItem) {
+        // If exists, increase quantity
+        return prevCart.map(item =>
+          item.id === product.id 
+            ? { ...item, quantity: item.quantity + 1 } 
+            : item
+        );
+      } else {
+        // If not exists, add new item with quantity 1
+        return [...prevCart, { ...product, quantity: 1 }];
       }
-
-      // Insert item into cart_items
-      const { error: addItemError } = await supabase
-        .from('cart_items')
-        .insert({
-          cart_id: cart.id,
-          product_id: product.id,
-          quantity: 1,
-          size: 'M', // Optional: allow user to pick size in modal
-        });
-
-      if (addItemError) throw addItemError;
-
-      alert(`${product.name} added to cart!`);
-    } catch (err) {
-      console.error('Error adding to cart:', err.message);
-      alert("Something went wrong while adding to cart.");
-    }
+    });
   };
 
   const filteredProducts = products.filter((p) => p.price <= price);
@@ -105,7 +78,7 @@ const Shop = () => {
 
   return (
     <div className="shop_page">
-      <Navbar />
+      <Navbar cartCount={cart.reduce((total, item) => total + item.quantity, 0)} />
       <p className="shop-header">Home &gt; All Products</p>
 
       <div className="shop-container">
@@ -160,27 +133,25 @@ const Shop = () => {
             {sortedAndFilteredProducts.map((product) => (
               <div
                 key={product.id}
-                className="product-card clickable"
-                onClick={() => handleProductClick(product)}
+                className="product-card"
               >
-                <img
-                  src={
-                    product.product_images?.[0]
-                      ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/${product.product_images[0].image_path}`
-                      : 'https://via.placeholder.com/150'
-                  }
-                  alt={product.name}
-                  className="product-img"
-                />
-                <h3>{product.name}</h3>
-                <p>Ksh {product.price}</p>
-                <p className="product-desc">{product.description}</p>
-                <button
+                <div className="clickable" onClick={() => handleProductClick(product)}>
+                  <img
+                    src={
+                      product.product_images?.[0]
+                        ? `${import.meta.env.VITE_SUPABASE_URL}/storage/v1/object/public/product-images/${product.product_images[0].image_path}`
+                        : 'https://via.placeholder.com/150'
+                    }
+                    alt={product.name}
+                    className="product-img"
+                  />
+                  <h3>{product.name}</h3>
+                  <p>Ksh {product.price}</p>
+                  <p className="product-desc">{product.description}</p>
+                </div>
+                <button 
                   className="add-to-cart-btn"
-                  onClick={(e) => {
-                    e.stopPropagation(); // Prevent opening modal
-                    handleAddToCart(product);
-                  }}
+                  onClick={() => addToCart(product)}
                 >
                   Add to Cart
                 </button>
@@ -191,7 +162,11 @@ const Shop = () => {
       </div>
 
       {selectedProduct && (
-        <Product product={selectedProduct} onClose={handleCloseModal} />
+        <Product 
+          product={selectedProduct} 
+          onClose={handleCloseModal}
+          onAddToCart={addToCart}
+        />
       )}
     </div>
   );
