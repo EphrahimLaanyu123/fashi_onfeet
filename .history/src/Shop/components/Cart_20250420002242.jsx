@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState } from 'react';
 import { supabase } from '../supabaseClient';
 import './Cart.css';
 import Navbar from '../../Navbar';
@@ -8,11 +8,8 @@ const Cart = () => {
   const [cartItems, setCartItems] = useState([]);
   const [loading, setLoading] = useState(true);
   const [total, setTotal] = useState(0);
-  const [ipnRegistrationData, setIpnRegistrationData] = useState(null);
-  const [orderResponse, setOrderResponse] = useState(null);
-  const [error, setError] = useState(null);
-  const iframeRef = useRef(null);
-  const [userId, setUserId] = useState(null);
+  const [user, setUser] = useState(null);
+  const [notificationId, setNotificationId] = useState(null); // To store the IPN ID
 
   useEffect(() => {
     const fetchCartItems = async () => {
@@ -25,7 +22,7 @@ const Cart = () => {
         return;
       }
 
-      setUserId(user.id); // Save for checkout
+      setUser(user);
 
       const { data: items, error } = await supabase
         .from('cart_items')
@@ -55,58 +52,63 @@ const Cart = () => {
       }
 
       setLoading(false);
+      // Optionally fetch the notification ID here or from a configuration
+      // For this example, I'll assume you have it stored or fetched elsewhere.
+      // Replace 'YOUR_STORED_NOTIFICATION_ID' with your actual logic.
+      setNotificationId('YOUR_STORED_NOTIFICATION_ID');
     };
 
     fetchCartItems();
-
-    return () => {
-      if (iframeRef.current) {
-        iframeRef.current.src = '';
-      }
-    };
   }, []);
 
-  const handleProceedToCheckout = async () => {
-    setLoading(true);
-    setError(null);
-
-    try {
-      // 1. Register IPN
-      const ipnRes = await axios.post('http://127.0.0.1:5000/register_ipn_combined', {
-        url: 'https://yourapp.com/ipn',
-        ipn_notification_type: 'POST'
-      });
-      const ipnData = ipnRes.data.ipn_registration;
-      setIpnRegistrationData(ipnData);
-
-      // 2. Submit Order
-      const orderRes = await axios.post('http://127.0.0.1:5000/submit_order', {
-        merchant_id: 'YOUR_MERCHANT_ID', // Replace this
-        amount: total,
-        description: 'Cart Purchase',
-        callback_url: 'https://yourapp.com/checkout/success',
-        notification_id: ipnData.ipn_id,
-        billing_address: {
-          email: 'test@example.com',
-          phone: '0700000000',
-          country_code: 'KE',
-          first_name: 'John',
-          last_name: 'Doe',
-        },
-      });
-
-      setOrderResponse(orderRes.data);
-
-      if (orderRes.data?.redirect_url && iframeRef.current) {
-        iframeRef.current.src = orderRes.data.redirect_url;
-      }
-
-    } catch (err) {
-      console.error('Checkout Error:', err);
-      setError(err.response ? err.response.data : { message: err.message });
+  const handleCheckout = async () => {
+    if (!user) {
+      alert("User not authenticated");
+      return;
     }
 
-    setLoading(false);
+    if (!notificationId) {
+      alert("Notification ID (IPN ID) is missing. Ensure it's configured.");
+      return;
+    }
+
+    const orderData = {
+      merchant_id: user.id,
+      currency: "KES",
+      amount: total,
+      description: "E-commerce Order Payment",
+      callback_url: `${window.location.origin}/payment-callback`, // Use the current origin for callback
+      redirect_mode: "TOP_WINDOW",
+      notification_id: notificationId,
+      branch: "Online Store",
+      email: user.email,
+      // Assuming you might have these in user.user_metadata or elsewhere
+      phone: user.user_metadata?.phone || '',
+      country_code: user.user_metadata?.country_code || 'KE',
+      first_name: user.user_metadata?.first_name || '',
+      middle_name: user.user_metadata?.middle_name || '',
+      last_name: user.user_metadata?.last_name || '',
+      line_1: user.user_metadata?.address_line_1 || '',
+      line_2: user.user_metadata?.address_line_2 || '',
+      city: user.user_metadata?.city || 'Nairobi',
+      state: user.user_metadata?.state || '',
+      postal_code: user.user_metadata?.postal_code || '',
+      zip_code: user.user_metadata?.zip_code || ''
+    };
+
+    try {
+      const response = await axios.post('http://localhost:5000/submit_order', orderData);
+      console.log("Submit Order Response:", response.data); // Log the response
+      if (response.data && response.data.redirect_url) {
+        window.location.href = response.data.redirect_url; // Pesapal's payment page
+      } else {
+        console.error("Missing redirect_url in response:", response.data);
+        alert("Checkout failed: Missing payment redirect URL.");
+      }
+    } catch (err) {
+      console.error("Checkout failed:", err.response?.data || err.message);
+      alert("Checkout failed: Could not initiate payment.");
+    }
   };
 
   if (loading) return <p>Loading cart...</p>;
@@ -124,7 +126,6 @@ const Cart = () => {
     <div className="cart-container">
       <Navbar />
       <h2>Your Cart</h2>
-
       <div className="cart-items">
         {cartItems.map((item) => (
           <div className="cart-item" key={item.id}>
@@ -147,35 +148,10 @@ const Cart = () => {
           </div>
         ))}
       </div>
-
       <div className="cart-total">
         <h3>Total: Ksh {total}</h3>
-        <button onClick={handleProceedToCheckout} className="checkout-btn">
-          Proceed to Checkout
-        </button>
+        <button className="checkout-btn" onClick={handleCheckout}>Proceed to Checkout</button>
       </div>
-
-      {error && (
-        <div className="error-msg bg-red-200 text-red-800 p-3 rounded">
-          Error: {error.message}
-        </div>
-      )}
-
-      <div className="payment-iframe w-full max-w-md h-[500px] mt-6 border border-gray-300 rounded-md overflow-hidden">
-        <iframe
-          ref={iframeRef}
-          title="Pesapal Payment"
-          className="w-full h-full"
-          src=""
-        />
-      </div>
-
-      {orderResponse && (
-        <div className="bg-yellow-100 text-yellow-700 p-3 rounded mt-4">
-          Order Submitted:
-          <pre>{JSON.stringify(orderResponse, null, 2)}</pre>
-        </div>
-      )}
     </div>
   );
 };
