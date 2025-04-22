@@ -1,0 +1,31 @@
+.home-container {
+  background-color: black;
+  height: 100%;
+}
+
+.images-container {
+  display: flex;
+  height: 1500px;
+  padding: 2rem;
+  padding-top: 6rem;
+}
+
+.image1,
+.image2 {
+  background-size: auto;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+}
+
+
+/* Flex proportions */
+.image1 {
+  flex: 5.5;
+  background-image: url("https://static.wixstatic.com/media/bc439c_81f0e108fef742289cca2a608af8d3c1~mv2.jpg");
+}
+
+.image2 {
+  flex: 3.5;
+  background-image: url("https://static.wixstatic.com/media/bc439c_01f9dcb9288c449084b2625be71b7a54~mv2.jpg");
+}

@@ -1,0 +1,47 @@
+/* Basic styling for the container */
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f7f7f7;
+  padding: 20px;
+}
+
+/* Styling for the title */
+.home-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+/* Styling for the image container */
+.image-container {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap; /* Allow images to wrap if screen size is small */
+}
+
+/* Styling for the images */
+.home-image {
+  width: 100%;
+  max-width: 500px; /* Adjust as needed */
+  height: auto;
+  object-fit: cover;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .image-container {
+    flex-direction: column;
+    align-items: center;
+  }
+  .home-image {
+    width: 80%; /* Adjust image size on smaller screens */
+  }
+}
