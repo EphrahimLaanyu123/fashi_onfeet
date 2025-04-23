@@ -1,0 +1,113 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+.products-wrapper {
+  padding: 40px 20px;
+  background-color: #EFFE8A;
+  min-height: 100vh;
+  font-family: "Raleway", sans-serif;
+}
+
+.products-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: bold;
+  margin-bottom: 40px;
+  color: #333;
+}
+
+.slider {
+  display: flex;
+  gap: 3rem;
+  margin-left: ;
+}
+
+
+.product-card-home {
+  background-color: #F7FFC5;
+  overflow: hidden;
+  padding: 16px;
+  transition: box-shadow 0.3s ease;
+}
+
+.product-card-home:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.product-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.product-info {
+  padding: 16px;
+}
+
+.product-name {
+  font-size: 1.25rem;
+  margin: 0 0 8px;
+  color: #333;
+}
+
+.product-description {
+  font-size: 0.95rem;
+  color: #666;
+  margin-bottom: 12px;
+  height: 40px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.product-price {
+  font-weight: bold;
+  font-size: 1rem;
+  color: #000;
+}
+
+/* Slick Carousel styling */
+.slick-slide {
+  display: flex;
+  justify-content: center;
+}
+
+.slick-prev, .slick-next {
+  z-index: 1;
+}
+
+.slick-dots {
+  bottom: 10px;
+  position: absolute;
+  width: 100%; /* Adjust to full width */
+  display: flex;
+  justify-content: center;
+  padding: 0;
+}
+
+.slick-dots li button {
+  background-color: white; /* White color for dots */
+  border: none;
+  border-radius: 50%;
+  height: 8px; /* Size of the dot */
+  width: 8px; /* Size of the dot */
+  margin: 0 5px; /* Spacing between the dots */
+  opacity: 0.6; /* Slight opacity for inactive dots */
+  transition: opacity 0.3s ease; /* Smooth transition */
+}
+
+.slick-dots li.slick-active button {
+  opacity: 1; /* Full opacity for the active dot */
+}
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .products-wrapper {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .products-wrapper {
+    padding: 10px;
+  }
+}

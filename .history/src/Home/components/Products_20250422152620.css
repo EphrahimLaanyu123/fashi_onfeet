@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Product Carousel Styles */
+.products-carousel-container {
+  @apply w-full overflow-hidden;
+}
+
+.products-carousel {
+  @apply flex overflow-x-auto gap-6 py-4 pb-8 snap-x snap-mandatory scrollbar-hide;
+  -ms-overflow-style: none;  /* Hide scrollbar for IE and Edge */
+  scrollbar-width: none;  /* Hide scrollbar for Firefox */
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.products-carousel::-webkit-scrollbar {
+  display: none;
+}
+
+.product-card {
+  @apply flex-shrink-0 snap-start bg-white rounded-lg shadow-md overflow-hidden transition-all duration-300 hover:shadow-lg;
+  width: 250px;
+}
+
+.product-image-container {
+  @apply w-full h-64 overflow-hidden;
+}
+
+.product-img {
+  @apply w-full h-full object-cover transition-transform duration-300;
+}
+
+.product-card:hover .product-img {
+  @apply scale-105;
+}
+
+.product-info {
+  @apply p-4;
+}
+
+.product-name {
+  @apply text-lg font-medium text-gray-800 truncate;
+}
+
+.product-price {
+  @apply mt-2 text-base font-bold text-gray-900;
+}
+
+.carousel-control {
+  @apply absolute top-1/2 transform -translate-y-1/2 bg-white p-2 rounded-full shadow-md z-10
+         flex items-center justify-center opacity-90 hover:opacity-100 transition-all duration-200
+         border border-gray-200 text-gray-700 hover:text-gray-900 hover:shadow-lg;
+}
+
+.left-control {
+  @apply left-0 -ml-4;
+}
+
+.right-control {
+  @apply right-0 -mr-4;
+}
+
+@media (max-width: 640px) {
+  .product-card {
+    width: 190px;
+  }
+  
+  .product-image-container {
+    @apply h-48;
+  }
+  
+  .carousel-control {
+    @apply p-1.5;
+  }
+}
