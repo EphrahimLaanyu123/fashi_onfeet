@@ -1,0 +1,100 @@
+@import url('https://fonts.googleapis.com/css2?family=Oranienbaum&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Hina+Mincho&display=swap');
+
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #000000;
+  padding: 20px;
+  overflow-x: hidden;
+}
+
+.home-title {
+  font-size: 2rem;
+  font-weight: bold;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.unique-container {
+  width: 100vw;
+  display: flex;
+  justify-content: center;
+  padding-top: 6rem;
+  padding-bottom: 6rem;
+}
+
+
+.image-wrapper-1 {
+  display: flex;
+  flex-direction: column;
+  width: 65%;
+  height: 1300px;
+  background-image: url('https://static.wixstatic.com/media/bc439c_81f0e108fef742289cca2a608af8d3c1~mv2.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed; 
+  background-repeat: no-repeat;
+}
+
+.image-wrapper-2 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 35%;
+  height: 1300px;
+  background-image: url('https://static.wixstatic.com/media/bc439c_01f9dcb9288c449084b2625be71b7a54~mv2.jpg');
+  background-size: contain;
+  background-position: center;
+  background-attachment: fixed;
+}
+
+@media (max-width: 768px) {
+  .image-container {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .image-wrapper-1,
+  .image-wrapper-2 {
+    width: 80%;
+    max-width: 100%;
+    background-attachment: scroll; /* Ensure no parallax on small screens */
+  }
+}
+
+.image-wrapper-text {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem;
+}
+
+
+.p1 {
+  font-size: 10rem;
+  color: white;
+  text-shadow: 2px 2px 8px rgba(255, 255, 255, 0.3);
+  text-align: left;
+  font-family: "Oranienbaum", serif;
+  line-height: 0; 
+
+}
+
+.p2 {
+  font-size: 2rem;
+  color: #f0eaea;
+  text-shadow: 1px 1px 6px rgba(255, 255, 255, 0.2);
+  text-align: left;
+  font-family: "Hina Mincho", serif;
+  margin-top: 1rem; /* Add some top margin */
+  margin-bottom: 2rem; /* Small bottom margin */
+}
+
+.home-button {
+  background-color: #EFFE8A;
+  width: 100%;
+}

@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400..800&display=swap');
+
+
+.products-wrapper {
+  padding: 40px 20px;
+  background-color: #EFFE8A;
+  font-family: "Raleway", sans-serif;
+  overflow-x: hidden;
+  position: relative; /* Needed for absolute positioning of children if necessary */
+}
+
+.products-title {
+  text-align: left;
+  font-size: 81px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  color: #333;
+  margin-left: 70px;
+  font-family: "Special Elite", system-ui;
+
+}
+.slider {
+  display: flex;
+  gap: 60px;
+  height: 500px; /* Set fixed height */
+  align-items: center; /* Ensure slides are vertically centered */
+  overflow: hidden; /* prevents content inside from leaking out */
+
+}
+
+.slick-slide {
+  display: flex;
+  justify-content: center;
+  padding: 0 10px; /* Optional: Add space around each slide */
+}
+
+.product-card-home {
+  background-color: #F7FFC5;
+  overflow: hidden;
+  transition: box-shadow 0.3s ease;
+  height: 450px;
+  width: 100%; /* Ensure each card takes full width of its slide */
+  display: flex;
+  flex-direction: column;
+  border: 2px solid black; /* Add a 2px solid black border */
+  box-sizing: border-box; /* Ensures border doesn't affect the overall size of the card */
+}
+
+
+.product-card-home:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+}
+
+.product-image {
+  width: 100%;
+  height: 65%; /* Increase image height to cover most of the card */
+  object-fit: cover;
+}
+
+.product-info {
+  padding: 16px;
+  font-size: 1rem; /* Adjust font size to be smaller for better balance */
+  flex-grow: 1; /* Ensure the product info takes the remaining space */
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end; /* Align the text towards the bottom */
+}
+
+.product-name {
+  font-size: 1.3rem; /* Adjust font size for better balance */
+  margin: 0 0 8px;
+  color: #333;
+}
+
+.product-description {
+  font-size: 1rem;
+  color: #666;
+}
+
+.product-price {
+  font-weight: bold;
+  font-size: 1.5rem; /* Adjust font size */
+  color: #000;
+}
+
+/* Slick Carousel styling */
+.slick-slide {
+  display: flex;
+  justify-content: center;
+  padding: 0 10px; /* Adding horizontal padding for spacing between cards */
+}
+
+.slick-prev, .slick-next {
+  z-index: 1;
+}
+
+
+/* Responsive design */
+@media (max-width: 1024px) {
+  .products-wrapper {
+    padding: 20px;
+  }
+}
+
+@media (max-width: 768px) {
+  .products-wrapper {
+    padding: 10px;
+  }
+}
+
