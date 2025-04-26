@@ -1,0 +1,75 @@
+.fade-section {
+    width: 100%;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color 0.4s ease-out;
+    background-image: url("https://static.wixstatic.com/media/bc439c_cb372cc97203439cba9f64c8f15cf5c3~mv2.jpg");
+    background-position: center;
+  }
+  
+  .fade-content {
+    background-color: white;
+    padding: 4rem 2rem;
+    border-radius: 20px;
+    text-align: center;
+    color: #333;
+    max-width: 800px;
+    margin: 0 auto;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    border: 2px solid black;
+    opacity: 0;
+    transform: translateY(50px);
+    transition: opacity 0.5s ease, transform 0.5s ease;
+    width: 80%;
+  }
+  
+  .fade-content.visible {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  .fade-content h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    font-weight: 700;
+  }
+  
+  .fade-content p {
+    font-size: 1.2rem;
+    margin-bottom: 2rem;
+    line-height: 1.6;
+  }
+  
+  .explore-button {
+    background-color: #333;
+    color: white;
+    border: 2px solid #333;
+    padding: 12px 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-radius: 6px;
+  }
+  
+  .explore-button:hover {
+    background-color: transparent;
+    color: #333;
+  }
+  
+  @media (max-width: 768px) {
+    .fade-content {
+      padding: 3rem 1.5rem;
+      width: 90%;
+    }
+    
+    .fade-content h2 {
+      font-size: 2rem;
+    }
+    
+    .fade-content p {
+      font-size: 1rem;
+    }
+  }

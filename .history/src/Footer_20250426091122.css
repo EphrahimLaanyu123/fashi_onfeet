@@ -1,0 +1,27 @@
+.footer {
+    width: 100%;
+    background-color: black;
+    dis
+}
+
+.footer-left {
+    width: 50%;
+    height: 300px;
+    background-color: aqua;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;   
+}
+
+
+.links {
+    display: flex;
+    flex-direction: column;
+    padding: 6rem;
+    padding-right: 10rem;
+}
+
+.footer-right {
+    background-color: #EFFE8A;
+    width: 50%;
+}

@@ -1,0 +1,28 @@
+.footer {
+    width: 100%;
+    background-color: black;
+    display: flex;
+}
+
+.footer-left {
+    width: 50%;
+    height: 300px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;  
+    color: ; 
+}
+
+
+.links {
+    display: flex;
+    flex-direction: column;
+    padding: 6rem;
+    padding-right: 10rem;
+}
+
+.footer-right {
+    background-color: #EFFE8A;
+    width: 50%;
+    padding: 4rem;
+}
